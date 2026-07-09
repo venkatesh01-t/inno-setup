@@ -80,6 +80,10 @@ Name: "desktopicon"; \
   Description: "{cm:CreateDesktopIcon}"; \
   GroupDescription: "{cm:AdditionalIcons}"; \
   Flags: unchecked
+Name: "startup"; \
+  Description: "Start {#MyAppName} automatically when Windows starts"; \
+  GroupDescription: "{cm:AdditionalIcons}"; \
+  Flags: unchecked
 
 ; ============================================================================
 [Files]
@@ -157,12 +161,26 @@ end;
 // ── Build the Scheduled Task XML ─────────────────────────────────────────────
 // The <Actions> block executes the installed launcher.ps1 script using PowerShell,
 // running under the highest privileges available for the logged-on user.
-function BuildTaskXml(const AppDir: string): string;
+function BuildTaskXml(const AppDir: string; const UseLogonTrigger: Boolean): string;
 var
-  ScriptPath, PSArguments: string;
+  ScriptPath, PSArguments, TriggersXml: string;
 begin
   ScriptPath := AppDir + '\{#MyLauncherScript}';
   PSArguments := '-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "' + ScriptPath + '"';
+
+  if UseLogonTrigger then
+  begin
+    TriggersXml :=
+      '  <Triggers>'                                                           + #13#10 +
+      '    <LogonTrigger>'                                                      + #13#10 +
+      '      <Enabled>true</Enabled>'                                           + #13#10 +
+      '    </LogonTrigger>'                                                     + #13#10 +
+      '  </Triggers>';
+  end
+  else
+  begin
+    TriggersXml := '  <Triggers/>';
+  end;
 
   // We use XML so we can set Hidden=true and RunLevel=HighestAvailable
   // exactly as Task Scheduler exposes them in the GUI.
@@ -175,9 +193,7 @@ begin
     '    <Author>{#MyAppPublisher}</Author>'                                  + #13#10 +
     '  </RegistrationInfo>'                                                   + #13#10 +
 
-    // No automatic trigger – started on-demand via schtasks /Run
-    // or by the Start Menu / Desktop shortcuts created above.
-    '  <Triggers/>'                                                           + #13#10 +
+    TriggersXml                                                               + #13#10 +
 
     '  <Principals>'                                                          + #13#10 +
     '    <Principal id="Author">'                                             + #13#10 +
@@ -222,9 +238,11 @@ procedure CreateScheduledTask;
 var
   AppDir, XmlFile, Params: string;
   ResultCode: Integer;
+  UseLogonTrigger: Boolean;
 begin
   AppDir  := ExpandConstant('{app}');
-  XmlFile := WriteStringToTempFile(BuildTaskXml(AppDir));
+  UseLogonTrigger := WizardIsTaskSelected('startup');
+  XmlFile := WriteStringToTempFile(BuildTaskXml(AppDir, UseLogonTrigger));
 
   // Run PowerShell to:
   // 1. Register the scheduled task using the native Register-ScheduledTask cmdlet.
