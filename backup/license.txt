@@ -1,0 +1,26 @@
+===============================================================================
+END USER LICENSE AGREEMENT (EULA)
+Clinic Manager Application
+===============================================================================
+
+1. GRANT OF LICENSE
+Subject to the terms of this Agreement, the publisher grants you a limited, 
+non-exclusive, non-transferable license to install and use Clinic Manager 
+on compatible devices within your organization or personal environment.
+
+2. RESTRICTIONS
+You shall not reverse engineer, decompile, disassemble, modify, adapt, 
+or create derivative works based upon the software, except and only to the 
+extent that such activity is expressly permitted by applicable law.
+
+3. UPDATES & ONLINE SERVICES
+The application includes an automated updating component (updater.exe) 
+which may periodically connect to application servers to retrieve software 
+updates, patches, or core application binaries (app.exe).
+
+4. DISCLAIMER OF WARRANTY
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+===============================================================================

@@ -1,0 +1,16 @@
+﻿{
+    "version":  "6.7.0",
+    "name":  "rea-agents",
+    "repository":  "https://github.com/morluto/rea",
+    "description":  "Reverse Engineer Anything (REA) - Comprehensive binary, web, mobile, firmware, and runtime reverse engineering tools and workflows.",
+    "platforms":  {
+                      "antigravity":  {
+                                          "config":  "plugin.json",
+                                          "entry":  "rules/rea-guidelines.md",
+                                          "rulesDir":  "rules/",
+                                          "skillsDir":  "skills/"
+                                      }
+                  },
+    "author":  "morluto",
+    "license":  "Apache-2.0"
+}
